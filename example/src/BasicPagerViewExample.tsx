@@ -1,15 +1,17 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, View, SafeAreaView, Animated, Text } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
 
 import PagerView from 'react-native-pager-view';
 
 import { LikeCount } from './component/LikeCount';
 import { NavigationPanel } from './component/NavigationPanel';
 import { useNavigationPanel } from './hook/useNavigationPanel';
-
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 const AnimatedPagerView = Animated.createAnimatedComponent(PagerView);
+const Tab = createMaterialBottomTabNavigator();
 
-export function BasicPagerViewExample() {
+function Component() {
   const { ref, ...navigationPanel } = useNavigationPanel();
 
   return (
@@ -37,6 +39,14 @@ export function BasicPagerViewExample() {
           () =>
             navigationPanel.pages.map((page, index) => (
               <View key={page.key} style={page.style} collapsable={false}>
+                <TextInput
+                  style={{
+                    height: 100,
+                    width: '100%',
+                    backgroundColor: 'red',
+                  }}
+                />
+
                 <LikeCount />
                 <Text
                   testID={`pageNumber${index}`}
@@ -48,6 +58,14 @@ export function BasicPagerViewExample() {
       </AnimatedPagerView>
       <NavigationPanel {...navigationPanel} />
     </SafeAreaView>
+  );
+}
+
+export function BasicPagerViewExample() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="test" component={Component} />
+    </Tab.Navigator>
   );
 }
 
